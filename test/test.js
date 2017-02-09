@@ -41,6 +41,19 @@ describe('snapdragon-capture', function() {
         assert.equal(snapdragon.parser.input, '');
       });
 
+      it('should emit tokens', function() {
+        var count = 0;
+        snapdragon.parser.on('token', function() {
+          count++;
+        });
+
+        snapdragon.capture('all', /^.*/);
+        snapdragon.parse('a/b');
+        assert.equal(snapdragon.parser.parsed, 'a/b');
+        assert.equal(snapdragon.parser.input, '');
+        assert.equal(count, 1);
+      });
+
       it('should create ast node:', function() {
         snapdragon.capture('all', /^.*/);
         snapdragon.parse('a/b');

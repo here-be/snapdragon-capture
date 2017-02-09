@@ -10,9 +10,7 @@
  * var parser = new Snapdragon.Parser();
  * parser.use(capture());
  * ```
- * @param {String} `type`
- * @param {RegExp|Function} `regex` Pass the regex to use for capturing. Pass a function if you need access to the parser instance.
- * @return {Object} Returns the parser instance for chaining
+ *
  * @api public
  */
 
@@ -42,12 +40,10 @@ module.exports = function(options) {
  *   .capture('comma', /^,/)
  *   .capture('foo', function() {
  *     var pos = this.position();
- *     var m = this.match(/^\./);
- *     if (!m) return;
- *     return pos({
- *       type: 'foo',
- *       val: m[0]
- *     });
+ *     var match = this.match(/^\./);
+ *     if (match) {
+ *       return pos(this.node(match[0]));
+ *     }
  *   });
  * ```
  * @param {String} `type`
@@ -64,13 +60,12 @@ function capture(type, regex) {
   this.regex.set(type, regex);
   this.set(type, function() {
     var pos = this.position();
-    var m = this.match(regex);
-    if (!m || !m[0]) return;
-
-    var prev = this.prev();
-    var node = this.node(pos, m[0]);
-    node.define('match', m);
-    prev.addNode(node);
+    var match = this.match(regex);
+    if (match) {
+      var node = pos(this.node(match[0], type));
+      node.match = match;
+      return node;
+    }
   }.bind(this));
   return this;
 }
