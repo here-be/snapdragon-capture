@@ -1,7 +1,7 @@
 {
   "name": "snapdragon-capture",
   "description": "Snapdragon plugin that adds a capture method to the parser instance.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "homepage": "https://github.com/jonschlinkert/snapdragon-capture",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "jonschlinkert/snapdragon-capture",
